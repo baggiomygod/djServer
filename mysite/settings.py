@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'video2gif.apps.Video2GifConfig',  # 视频转GIF
     'polls.apps.PollsConfig',  # 投票
     'django.contrib.admin',  # 管理员站点
     'django.contrib.auth',  # 认证授权系统

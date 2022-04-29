@@ -1,0 +1,8 @@
+{% if latest_gif_list %}
+    <ul>
+        {% for g in latest_gif_list %}
+            <li><a href="">{{ g.id }}:{{ g.name }}</a></li>
+{#            <li><a href="{% url 'video2gif:detail' question.url %}">{{ g.id }}:{{ g.name }}</a></li>#}
+        {% endfor %}
+    </ul>
+{% endif %}
