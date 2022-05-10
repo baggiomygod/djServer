@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
     path('video2gif/', include('video2gif.urls')),

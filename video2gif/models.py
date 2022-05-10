@@ -17,7 +17,7 @@ class Video(models.Model):
 
 
 class Gif(models.Model):
-    Gif = models.ForeignKey(Video, on_delete=models.PROTECT, null=True)
+    video = models.ForeignKey(Video, on_delete=models.PROTECT, null=True)
     name = models.CharField(max_length=100)
     url = models.ImageField(upload_to='djserver/upload/gif')
     create_time = models.DateTimeField('gif created')
