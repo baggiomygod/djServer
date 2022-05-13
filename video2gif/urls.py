@@ -11,4 +11,5 @@ urlpatterns = [
     # ex: /video2gif/
     path('', include(router.urls)),
     path('index', views.IndexView.as_view(), name='index'),
+    path('upload', views.FileUploadView.as_view())
 ]

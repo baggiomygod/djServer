@@ -26,3 +26,9 @@ class GifSerializer(serializers.ModelSerializer):
             'video_id'
         ]
 
+
+# 文件上传服务 video
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = '__all__'

@@ -15,10 +15,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.authtoken import views
+
+from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView, TokenVerifyView)
+
+# from rest_framework.routers import DefaultRouter
+# from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
-    path('', include('rest_framework.urls', namespace='rest_framework')),
+    # 测试登录
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # drf自带的token授权登录，获取token需要向该地址post数据
+    path('api-token-auth/', views.obtain_auth_token),
+
+    # jwt的token认证
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # 验证Token的有效性
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
+    path('app/', include('app_auth.urls')),
     path('video2gif/', include('video2gif.urls')),
 ]

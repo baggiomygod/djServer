@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'app_auth.apps.AppAuthConfig',  # auth
+    'upload.apps.UploadConfig',  # 上传
     'video2gif.apps.Video2GifConfig',  # 视频转GIF
     'polls.apps.PollsConfig',  # 投票
     'django.contrib.admin',  # 管理员站点
@@ -40,17 +42,50 @@ INSTALLED_APPS = [
     'django.contrib.messages',  # 消息框架
     'django.contrib.staticfiles',  # 管理静态文件的框架
     'rest_framework',  # restful api
+    'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
+    # 全局配置异常模块
+    'EXCEPTION_HANDLER': 'utils.exception.custom_exception_handler',
+    # 修改默认返回JSON的renderer的类
+    'DEFAULT_RENDERER_CLASSES': (
+        'utils.rendererresponse.CustomerRenderer',
+    ),
+    # 访问权限
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',  # 普通用户
+        # 'rest_framework.permissions.AllowAny', #所有用户
+        # 'rest_framework.permissions.IsAdminUser',  # 管理员户
+    ),
+    # 身份认证的方式：jwt,session两种
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 前后端分离使用jwt验证
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # token验证 前端header头 {Authentication：Bearer token }, 为什么是Bearer？
+        # 访问admin后台时使用
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+# 覆盖JWT默认配置
+SIMPLE_JWT = {
+    # token有效时长
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=30),
+    # token刷新后的有效时间
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    # 'AUTH_HEADER_TYPES': ('JWT',)  # 请求头里的 前缀，这里覆盖默认的Bearer
+
+}
+# 手机号码正则表达式
+REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
+
+# 后端测试登录成功后的重定向
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,6 +96,40 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+"""
+跨域和CSRF
+"""
+CSRF_TRUSTED_ORIGINS = ['http://localhost:9999', 'http://127.0.0.1:9999']
+# SESSION_COOKIE_SECURE = True
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = (
+#     '127.0.0.1:9999',
+#     'loaclhost:9999'
+# )
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
 
 ROOT_URLCONF = 'mysite.urls'
 
