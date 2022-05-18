@@ -13,15 +13,19 @@ class CustomerRenderer(JSONRenderer):
         if renderer_context:
             # 如果返回的data为字典
             if isinstance(data, dict):
-                msg = data.pop('message', 'success')
+                message = data.pop('errorCode', 'success')
+                detail = ''
+                if 'errorDetail' in data:
+                    detail = data.pop('errorDetail')
                 code = data.pop('code', renderer_context['response'].status_code)
             # 如果不是字典则将msg内容改为请求成功 code改为请求的状态码
             else:
-                msg = 'success'
+                message = 'success'
                 code = renderer_context['response'].status_code
 
             ret = {
-                'msg': msg,
+                'errorCode': message,
+                'errorDetail': detail,
                 'code': code,
                 'data': data
             }

@@ -10,9 +10,22 @@ class VideoSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'url',
+            'type',
             'size',
             'create_time'
         ]
+        extra_kwargs = {
+            'name': {'required': True},
+            'size': {'required': False},
+            'create_time': {'required': False},
+            'type': {'required': False},
+        }
+
+    def create(self, validated_data):
+        obj = Video.objects.create(
+            url=self.context['request'].data.get('url', None)
+        )
+        return obj
 
 
 class GifSerializer(serializers.ModelSerializer):
@@ -25,10 +38,3 @@ class GifSerializer(serializers.ModelSerializer):
             'create_time',
             'video_id'
         ]
-
-
-# 文件上传服务 video
-class FileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Video
-        fields = '__all__'

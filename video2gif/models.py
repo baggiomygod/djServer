@@ -21,3 +21,5 @@ class Gif(models.Model):
     name = models.CharField(max_length=100)
     url = models.ImageField(upload_to='djserver/upload/gif')
     create_time = models.DateTimeField('gif created')
+
+
