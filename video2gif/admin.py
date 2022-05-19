@@ -28,12 +28,12 @@ class VideoAmin(admin.ModelAdmin):
         ('Video name', {'fields': ['name']}),
         ('Video url', {'fields': ['url']}),
         ('Video size', {'fields': ['size']}),
-        ('Video type', {'fields': ['type']}),
+        ('Video type', {'fields': ['file_type']}),
         ('Create time', {'fields': ['create_time']})
     ]
     date_hierarchy = 'create_time'
-    list_display = ('id', 'name', 'url', 'size', 'type', 'create_time')
-    list_filter = ['create_time', 'type']
+    list_display = ('id', 'name', 'url', 'size', 'file_type', 'create_time')
+    list_filter = ['create_time', 'file_type']
     search_fields = ['name']
     list_per_page = 100
     inlines = [GifInline]

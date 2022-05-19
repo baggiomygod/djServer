@@ -6,26 +6,14 @@ from .models import Video, Gif
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = [
-            'id',
-            'name',
-            'url',
-            'type',
-            'size',
-            'create_time'
-        ]
+        fields = '__all__'
         extra_kwargs = {
             'name': {'required': True},
             'size': {'required': False},
             'create_time': {'required': False},
-            'type': {'required': False},
+            'file_type': {'required': False},
         }
 
-    def create(self, validated_data):
-        obj = Video.objects.create(
-            url=self.context['request'].data.get('url', None)
-        )
-        return obj
 
 
 class GifSerializer(serializers.ModelSerializer):

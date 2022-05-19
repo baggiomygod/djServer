@@ -34,36 +34,21 @@ class VideoList(viewsets.ModelViewSet):
     queryset = Video.objects.all().order_by('create_time')
     serializer_class = VideoSerializer
     # parser_classes = [FileUploadParser]
-    
-class VideoAdd1(CreateAPIView):
-    parser_classes = (MultiPartParser, FormParser, )
+
+
+class VideoAdd(CreateAPIView):
+    # MultiPartParser: multipart/form-data
+    # FormParser: application/x-www-form-urlencoded
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     serializer_class = VideoSerializer
 
-# class VideoAdd2(CreateAPIView):
-#     # MultiPartParser: multipart/form-data
-#     # FormParser: application/x-www-form-urlencoded
-#     parser_classes = (MultiPartParser, FormParser, )
-#     serializer_class = VideoSerializer
-
-#     def post(self, request, *args, **kwargs):
-#         print('VideoAdd content_type:', request.content_type)
-#         print('VideoAdd data:', request.data)
-#         print('VideoAdd FILES:', request.FILES)
-#         serializer = self.serializer_class(data=request.data)
-#         # serializer = self.serializer_class(data=request.data)
-#         if not serializer.is_valid():
-#             return Response({'message': str(serializer.errors)}, status=status.HTTP_400_BAD_REQUEST)
-#         else:
-#             url = request.FILES
-#             print('url:', url)
-#             name = serializer.data.get('name')
-#             type_val = serializer.data.get('type')
-#             create_time = serializer.data.get('create_time')
-#             size = serializer.data.get('size')
-#             video = Video(url=url, name=name, type=type_val, create_time=create_time, size=size)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         print('errors:', serializer.errors)
-#         return Response({'message': 'creat filed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid(raise_exception=True):
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            serializer.save()  # 上传并在数据库记录
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 # gif list get

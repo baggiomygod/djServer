@@ -16,7 +16,6 @@ import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -91,6 +90,11 @@ REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
 
 # 后端测试登录成功后的重定向
 LOGIN_REDIRECT_URL = '/'
+
+# 文件最大限制
+MAX_FILE_100M = 104857600
+MAX_FILE_10M = 10485760
+MAX_FILE_5M = 5 * 1024 * 1024
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
