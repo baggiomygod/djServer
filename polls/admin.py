@@ -23,4 +23,15 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
 
 
+class ChoiceAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('choice_text information', {'fields': ['choice_text']}),
+        ('votes information', {'fields': ['votes'], 'classes': ['collapse']}),
+    ]
+    list_display = ('choice_text', 'votes', 'question_id', 'question')  # table 列
+    search_fields = ['choice_text']  # 搜索框
+    list_per_page = 100  # 每页条数
+
+
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Choice, ChoiceAdmin)

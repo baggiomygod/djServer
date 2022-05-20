@@ -1,3 +1,6 @@
+import os
+import time
+
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -36,6 +39,7 @@ class VideoList(viewsets.ModelViewSet):
     # parser_classes = [FileUploadParser]
 
 
+# 上传视频
 class VideoAdd(CreateAPIView):
     # MultiPartParser: multipart/form-data
     # FormParser: application/x-www-form-urlencoded
@@ -43,7 +47,15 @@ class VideoAdd(CreateAPIView):
     serializer_class = VideoSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        # 将文件大小和类型及时间添加到参数
+        file = request.data.get('url')
+        ext = os.path.splitext(file.name)[1]
+        data = request.data
+        data['file_type'] = ext
+        data['size'] = file.size
+        data['create_time'] = timezone.now()
+        data['user'] = request.user.id
+        serializer = VideoSerializer(data=data)
         if not serializer.is_valid(raise_exception=True):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -55,3 +67,22 @@ class VideoAdd(CreateAPIView):
 class GifList(viewsets.ModelViewSet):
     queryset = Gif.objects.all().order_by('create_time')
     serializer_class = GifSerializer
+
+
+# 上传图片
+class GifAdd(CreateAPIView):
+    # MultiPartParser: multipart/form-data
+    # FormParser: application/x-www-form-urlencoded
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
+
+    def post(self, request, *args, **kwargs):
+        # 将文件大小和类型及时间添加到参数
+        data = request.data
+        data['create_time'] = timezone.now()
+        data['user'] = request.user.id
+        serializer = GifSerializer(data=data)
+        if not serializer.is_valid(raise_exception=True):
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            serializer.save()  # 上传并在数据库记录
+            return Response(serializer.data, status=status.HTTP_201_CREATED)

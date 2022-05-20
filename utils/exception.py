@@ -17,10 +17,14 @@ def custom_exception_handler(exc, context):
     if isinstance(exc, ValidationError):
         detail = exc.detail
         key = next(iter(detail))
+        keys = []
+        for key in detail:
+            keys.append(key)
+            print('key:', key)
         error = detail[key]  # [ErrorDetail(string='Unsupported file extension.', code='invalid ext')]
         return Response({
             'errorCode': 'invalid',
-            'errorDetail': error[0],
+            'errorDetail': ','.join(keys) + ':' + error[0],
 
         }, status=status.HTTP_200_OK, exception=True)
     else:  # Http404 PermissionDenied  exceptions.APIException

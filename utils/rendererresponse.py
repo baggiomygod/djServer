@@ -14,7 +14,7 @@ class CustomerRenderer(JSONRenderer):
             # 如果返回的data为字典
             if isinstance(data, dict):
                 message = data.pop('errorCode', 'success')
-                detail = ''
+                detail = None
                 if 'errorDetail' in data:
                     detail = data.pop('errorDetail')
                 code = data.pop('code', renderer_context['response'].status_code)

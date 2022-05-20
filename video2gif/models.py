@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # from utils.restrictedFileField import RestrictedFileField
 from utils.FileFieldValidators import validate_file_extension, file_size
@@ -11,6 +12,7 @@ from utils.FileFieldValidators import validate_file_extension, file_size
 
 
 class Video(models.Model):
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     name = models.CharField(max_length=100)
     size = models.IntegerField()
     file_type = models.CharField(max_length=10)
@@ -23,7 +25,7 @@ class Video(models.Model):
 
 
 class Gif(models.Model):
-    video = models.ForeignKey(Video, on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     name = models.CharField(max_length=100)
     url = models.ImageField(upload_to='djserver/upload/gif')
     create_time = models.DateTimeField('gif created')

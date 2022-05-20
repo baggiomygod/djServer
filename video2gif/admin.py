@@ -29,14 +29,14 @@ class VideoAmin(admin.ModelAdmin):
         ('Video url', {'fields': ['url']}),
         ('Video size', {'fields': ['size']}),
         ('Video type', {'fields': ['file_type']}),
-        ('Create time', {'fields': ['create_time']})
+        ('Create time', {'fields': ['create_time']}),
+        ('User', {'fields': ['user_id']})
     ]
     date_hierarchy = 'create_time'
-    list_display = ('id', 'name', 'url', 'size', 'file_type', 'create_time')
+    list_display = ('id', 'name', 'url', 'size', 'file_type', 'create_time', 'user_id', 'user')
     list_filter = ['create_time', 'file_type']
     search_fields = ['name']
     list_per_page = 100
-    inlines = [GifInline]
 
 
 admin.site.register(Gif, GifAdmin)
