@@ -7,6 +7,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.utils import timezone
 from django.views import generic
+from moviepy.editor import *
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser, JSONParser
@@ -86,3 +87,13 @@ class GifAdd(CreateAPIView):
         else:
             serializer.save()  # 上传并在数据库记录
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+# 视频转gif
+class Video2Gif(CreateAPIView):
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
+
+    def post(self, request, *args, **kwargs):
+        # clip = VideoFileClip(request.data.videoPath).subclip(0, 5)  # 1~3s
+        # clip.write_gif(request.data.gifOutPath)
+        Response(request.data, status=status.HTTP_200_OK)
