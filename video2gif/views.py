@@ -90,10 +90,11 @@ class GifAdd(CreateAPIView):
 
 
 # 视频转gif
-class Video2Gif(CreateAPIView):
+class TransVideo2Gif(CreateAPIView):
     parser_classes = (MultiPartParser, FormParser, JSONParser)
 
     def post(self, request, *args, **kwargs):
         # clip = VideoFileClip(request.data.videoPath).subclip(0, 5)  # 1~3s
         # clip.write_gif(request.data.gifOutPath)
+        print(request)
         Response(request.data, status=status.HTTP_200_OK)
