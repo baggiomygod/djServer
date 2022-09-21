@@ -7,10 +7,11 @@ from rest_framework.renderers import JSONRenderer
 
 class CustomerRenderer(JSONRenderer):
     def render(self, data, accepted_media_type=None, renderer_context=None):
-        print('data:', data)
+        print('CustomerRenderer data:', data)
         print('accepted_media_type:', accepted_media_type)
         print('renderer_context:', renderer_context)
         if renderer_context:
+            detail = None
             # 如果返回的data为字典
             if isinstance(data, dict):
                 message = data.pop('errorCode', 'success')
@@ -21,6 +22,7 @@ class CustomerRenderer(JSONRenderer):
             # 如果不是字典则将msg内容改为请求成功 code改为请求的状态码
             else:
                 message = 'success'
+                detail = None
                 code = renderer_context['response'].status_code
 
             ret = {

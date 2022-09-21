@@ -17,6 +17,6 @@ def validate_file_extension(value):
 
 # 校验文件大小
 def file_size(value):
-    limit = 5 * 1024 * 1024
+    limit = 10 * 1024 * 1024
     if value.size > limit:
-        raise serializers.ValidationError('File too large. Size should not exceed 5 MiB.', code='invalid size')
+        raise serializers.ValidationError('File too large. Size should not exceed 10M.', code='invalid size')

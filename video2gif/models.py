@@ -1,7 +1,10 @@
+import os
+
 from django.db import models
 from django.contrib.auth.models import User
 
 # from utils.restrictedFileField import RestrictedFileField
+from mysite.settings import FILE_ROOT
 from utils.FileFieldValidators import validate_file_extension, file_size
 
 
@@ -10,22 +13,19 @@ from utils.FileFieldValidators import validate_file_extension, file_size
 # py ./manage.py sqlmigrate polls 0001  执行迁移
 # python manage.py migrate
 
-
 class Video(models.Model):
+    """视频model"""
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     name = models.CharField(max_length=100)
     size = models.IntegerField()
     file_type = models.CharField(max_length=10)
     create_time = models.DateTimeField('video created')
-    url = models.FileField(upload_to='djserver/upload/video', validators=[validate_file_extension, file_size])
-    # url = RestrictedFileField(upload_to='djserver/upload/video',
-    #                           content_types=['video/mp4'],
-    #                           max_upload_size=settings.MAX_FILE_10M,
-    #                           blank=True, null=True)
+    url = models.FileField(upload_to=os.path.join(FILE_ROOT, 'video'), validators=[validate_file_extension, file_size])
 
 
 class Gif(models.Model):
+    """Gif model"""
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     name = models.CharField(max_length=100)
-    url = models.ImageField(upload_to='djserver/upload/gif')
+    url = models.ImageField(upload_to=os.path.join(FILE_ROOT, 'images'))
     create_time = models.DateTimeField('gif created')

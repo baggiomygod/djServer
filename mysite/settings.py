@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
 from pathlib import Path
 import datetime
 
@@ -26,12 +27,10 @@ SECRET_KEY = 'django-insecure-6z-9-2db2nefv4_=isuqc&s6#db$z%mwe0!rsw)ca@#7@=lkbp
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 # Application definition
 
 INSTALLED_APPS = [
     'app_auth.apps.AppAuthConfig',  # auth
-    'upload.apps.UploadConfig',  # 上传
     'video2gif.apps.Video2GifConfig',  # 视频转GIF
     'polls.apps.PollsConfig',  # 投票
     'django.contrib.admin',  # 管理员站点
@@ -241,3 +240,12 @@ LOGGING = {
         },
     }
 }
+FILE_PATH = '/files/'
+FILE_ROOT = os.path.join(BASE_DIR, 'files')
+FILE_VIDEO_DIR = os.path.join(FILE_ROOT, 'video')
+FILE_IMAGE_DIR = os.path.join(FILE_ROOT, 'image')
+PROJECT_ROOT = BASE_DIR
+# 测试服域名
+DEV_DOMAIN_NAME = "http://127.0.0.1:8930"
+TEST_DOMAIN_NAME = "http://127.0.0.1:8930"
+PROD_DOMAIN_NAME = "http://127.0.0.1:8930"

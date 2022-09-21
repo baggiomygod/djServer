@@ -6,8 +6,8 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # 'r'是防止字符转义的
-router.register(r'videos', views.VideoList)
-router.register(r'gifs', views.GifList)
+router.register(r'videos', views.VideoView)
+router.register(r'gifs', views.GifView)
 # router.register(r'video_add', views.VideoAdd)
 
 
@@ -16,9 +16,6 @@ urlpatterns = [
     # ex: /video2gif/
     path('', include(router.urls)),
     path('index', views.IndexView.as_view(), name='index'),
-    path('video_add', views.VideoAdd.as_view(), name='video_add'),
-    path('gif_add', views.GifAdd.as_view(), name='gif_add'),
-    path('trans', views.TransVideo2Gif.as_view(), name="video_gif")
 ]
 
 
