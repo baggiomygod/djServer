@@ -54,7 +54,7 @@ class VideoView(viewsets.ModelViewSet):
         data['create_time'] = timezone.now()
         data['user'] = request.user.id
         serializer = VideoSerializer(data=data)
-        if not serializer.is_valid(raise_exception  =True):
+        if not serializer.is_valid(raise_exception=True):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             serializer.save()  # 上传并在数据库记录
@@ -93,20 +93,21 @@ class VideoView(viewsets.ModelViewSet):
         # loading  gif
         gif = VideoFileClip(g_path)
 
-        # gif_data = {
-        #     'create_time': timezone.now(),
-        #     'user': request.user.id,
-        #     'name': os.path.basename(g_path),
-        #     'url': url.replace('.mp4', '.gif')
-        # }
-        user_id = User.objects.get(id=request.user.id)
-        gif_save = Gif.objects.create(
-            user=user_id,
-            create_time=timezone.now(),
-            name=os.path.basename(g_path),
-            url=url.replace('.mp4', '.gif')
-        )
-        gif_save.save()
+        new_gif_url = url.replace('.mp4', '.gif')
+        # 获取数据库，检查是否已存在
+        gif_existed = Gif.objects.filter(url=new_gif_url)
+        save_data = {
+            "user_id": request.user.id,
+            "create_time": timezone.now(),
+            "name": os.path.basename(g_path),
+            "url": new_gif_url
+        }
+        # 如果已存在更新，否则插入新的数据
+        if gif_existed:
+            gif_existed.update(**save_data)
+            return Response({"id": gif_existed[0].id, "name": gif_existed[0].name}, status=status.HTTP_201_CREATED)
+        else:
+            gif_save = Gif.objects.create(**save_data)
         return Response({"id": gif_save.id, "name": gif_save.name}, status=status.HTTP_201_CREATED)
 
 
