@@ -61,7 +61,7 @@ class VideoView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     # /video2gif/videos/{id}/convert_to_gif
-    @action(methods=['post'], detail=True)
+    @action(methods=['post'], detail=True)  # detail=True url传递id
     @parser_classes([JSONParser])
     def convert_to_gif(self, request, *args, **kwargs):
         """
@@ -105,10 +105,11 @@ class VideoView(viewsets.ModelViewSet):
         # 如果已存在更新，否则插入新的数据
         if gif_existed:
             gif_existed.update(**save_data)
-            return Response({"id": gif_existed[0].id, "name": gif_existed[0].name}, status=status.HTTP_201_CREATED)
+            return Response({"id": gif_existed[0].id, "name": gif_existed[0].name, "url": new_gif_url},
+                            status=status.HTTP_201_CREATED)
         else:
             gif_save = Gif.objects.create(**save_data)
-        return Response({"id": gif_save.id, "name": gif_save.name}, status=status.HTTP_201_CREATED)
+        return Response({"id": gif_save.id, "name": gif_save.name, "url": new_gif_url}, status=status.HTTP_201_CREATED)
 
 
 class GifView(viewsets.ModelViewSet):
