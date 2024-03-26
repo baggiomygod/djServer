@@ -17,6 +17,9 @@ import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR 是项目的根目录，这是一个相对路径  
+BASE_DIR_RELATIVE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -241,10 +244,12 @@ LOGGING = {
     }
 }
 FILE_PATH = '/files/'
-FILE_ROOT = os.path.join(BASE_DIR, 'files')
+# FILE_ROOT = os.path.join(BASE_DIR_RELATIVE, 'files')
+FILE_ROOT = os.path.join('files')  
+
 FILE_VIDEO_DIR = os.path.join(FILE_ROOT, 'video')
 FILE_IMAGE_DIR = os.path.join(FILE_ROOT, 'image')
-PROJECT_ROOT = BASE_DIR
+PROJECT_ROOT = BASE_DIR_RELATIVE
 # 测试服域名
 DEV_DOMAIN_NAME = "http://127.0.0.1:8930"
 TEST_DOMAIN_NAME = "http://127.0.0.1:8930"
