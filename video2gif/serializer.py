@@ -26,10 +26,13 @@ class VideoSerializer(serializers.ModelSerializer):
         # fields = '__all__'
 
         extra_kwargs = {
-            'name': {'required': True},
-            'size': {'required': True},
-            'create_time': {'required': True},
-            'file_type': {'required': True},
+            'name': {'required': True, 'help_text': '名称'},
+            'size': {'required': True, 'help_text': '文件大小'},
+            'create_time': {'required': True, 'help_text': '创建时间'},
+            'file_type': {'required': True, 'help_text': '文件类型'},
+            'url': {'required': False, 'help_text': '文件路径'},
+            'user': {'required': False, 'help_text': '用户账号'},
+            'username': {'required': False, 'help_text': '用户名'},
         }
 
 
@@ -47,3 +50,11 @@ class GifSerializer(serializers.ModelSerializer):
             'user',
             'username'
         ]
+        extra_kwargs = {
+            'id': {'required': False, 'help_text': 'ID'},
+            'name': {'required': True, 'help_text': '名称'},
+            'create_time': {'required': True, 'help_text': '创建时间'},
+            'url': {'required': False, 'help_text': '文件路径'},
+            'user': {'required': False, 'help_text': '用户账号'},
+            'username': {'required': False, 'help_text': '用户名'},
+        }

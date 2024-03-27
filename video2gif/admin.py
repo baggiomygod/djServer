@@ -5,7 +5,7 @@ from .models import Video
 
 # Register your models here.
 
-class GifAdmin(admin.ModelAdmin):
+class GifAddmin(admin.ModelAdmin):
     fieldsets = [
         ('Gif name', {'fields': ['name']}),
         ('Gif url', {'fields': ['url']}),
@@ -23,14 +23,17 @@ class GifInline(admin.TabularInline):
     extra = 3
 
 
-class VideoAmin(admin.ModelAdmin):
+class VideoAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Video name', {'fields': ['name']}),
         ('Video url', {'fields': ['url']}),
         ('Video size', {'fields': ['size']}),
         ('Video type', {'fields': ['file_type']}),
         ('Create time', {'fields': ['create_time']}),
-        ('User', {'fields': ['user_id']})
+        ('User', {'fields': ['user']}) # 在models.py中，有Video与User模型关联的字段，在Video.Admin中就不该使用user_id, 而是user
+        # 正确的方式应该是如上 
+        # 引入user_id会导致报错： Unknown field(s) (user_id) specified for Video. Check fields/fieldsets/exclude attributes of class VideoAmin
+        # ('User', {'fields': ['user_id']}) # 会导致报错！！！
     ]
     date_hierarchy = 'create_time'
     list_display = ('id', 'name', 'url', 'size', 'file_type', 'create_time', 'user_id', 'user')
@@ -39,5 +42,5 @@ class VideoAmin(admin.ModelAdmin):
     list_per_page = 100
 
 
-admin.site.register(Gif, GifAdmin)
-admin.site.register(Video, VideoAmin)
+admin.site.register(Gif, GifAddmin)
+admin.site.register(Video, VideoAdmin)
